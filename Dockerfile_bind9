@@ -1,0 +1,13 @@
+FROM internetsystemsconsortium/bind9:9.18
+
+# Install iptables
+RUN apk add --no-cache iptables
+
+# Copy your firewall script
+COPY firewall_settings/bind9_firewall.sh /firewall.sh
+
+# Make sure the script is executable
+RUN chmod +x /firewall.sh
+
+# Set the entrypoint
+ENTRYPOINT ["/bin/sh", "-c", "/firewall.sh && /usr/sbin/named -g -c /etc/bind/named.conf -u bind"]
