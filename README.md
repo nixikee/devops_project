@@ -1,27 +1,59 @@
-# Project
+## Használt tool-ok:
+ - docker
+ - git
+ - bind9
+ - firewall
+ - jenkins
+ - prometheus
+ - grafana
+ - graylog
+ - zabbix
+ - nginx
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.4.
+Docker compose-ban fut az angular alkalmazás, a bind9, a registry,, az nginx, a jenkins, a prometheus, a grafana és a zabbix. 
+Tűzfal is beállításra került.
+Terraform használatába is belekezdtem, ezt azonban nem sikerült működésre bírnom.
 
-## Development server
+## Futtatás:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+sudo nano /etc/resolv.conf -> nameserver 172.31.0.2
 
-## Code scaffolding
+sudo docker compose up --build
+sudo docker compose down
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Image készítése
 
-## Build
+sudo docker build -t angular-dev-env -f Dockerfile_angular-dev-env .
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+sudo docker tag angular-dev-env:latest localhost:5000/angular-dev-env:latest
 
-## Running unit tests
+sudo docker run -it --rm -p 5001:5000 registry:2
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+sudo docker push localhost:5000/angular-dev-env
 
-## Running end-to-end tests
+Jenkins-ben
+Angular-CI-Docker
+ - build step -> Execute shell
+		 - docker pull localhost:5000/angular-dev-env
+		 - docker run -rm angular-dev-env /bin/bash -c "git clone https://github.com/nixikee/devops_project.git && cd devops_project && npm install && npm run build"
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## SSH Jenkins-be
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+ssh-keygen -trsa -b 4096 -C "jenkins-deploy"
+ - ./keys/jenkins_deploy_key
+
+
+### Install jenkins-be:
+ - nodejs
+ - pipeline
+ - git
+ - ssh agent
+ - locale
+
+### Credentials:
+ - System/Global credentials
+ - kind: ssh
+ - id: jenkins-deploy-key
+ - username: deploy
+ - private key: keys/jenkins_deploy_key
