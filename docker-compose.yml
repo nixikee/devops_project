@@ -57,11 +57,11 @@ services:
     tty: true
     stdin_open: true
 
-  angular_deploy-env:
+  angular-dev:
     build:
       context: .
       dockerfile: Dockerfile_angular-dev-env
-    container_name: angular_deploy-env
+    container_name: angular-dev
     ports:
       - "3000:3000"
       - "2222:22"

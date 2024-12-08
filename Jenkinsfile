@@ -7,13 +7,14 @@ pipeline {
 
     environment {
         GITHUB_REPO = 'https://github.com/nixikee/devops_project.git'
-        DEPLOY_CONTAINER = 'angular_deploy-env'
+        BRANCH = 'main'
+        DEPLOY_CONTAINER = 'angular-dev'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git url: env.GITHUB_REPO
+                git branch: env.BRANCH, url: env.GITHUB_REPO
             }
         }
 
@@ -56,7 +57,7 @@ pipeline {
         stage('Deploy') {
             when {
                 anyOf {
-                    branch 'master'
+                    branch env.BRANCH
                 }
             }
             steps {
