@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         GITHUB_REPO = 'https://github.com/nixikee/devops_project.git'
-        DEPLOY_CONTAINER = 'node20-deploy-container'
+        DEPLOY_CONTAINER = 'angular_deploy-env'
     }
 
     stages {
@@ -56,7 +56,7 @@ pipeline {
         stage('Deploy') {
             when {
                 anyOf {
-                    branch env.BRANCH
+                    branch 'master'
                 }
             }
             steps {
@@ -66,12 +66,11 @@ pipeline {
                         ssh -o StrictHostKeyChecking=no deploy@${env.DEPLOY_CONTAINER} -p 22 '
                             cd /app
                             rm -rf *
-                            git clone https://github.com/jankiz/nodejs-sample-app-for-devops.git
-                            cd /app/nodejs-sample-app-for-devops
-                            git checkout origin/feature/http-server
+                            git clone https://github.com/nixikee/devops_project.git
+                            cd /app/devops_project
                             npm ci
                             npm run build
-                            pm2 start dist/index.js --name "calculator-app"
+                            pm2 start dist/index.js --name "angular-app"
                         '
                     """
                 }

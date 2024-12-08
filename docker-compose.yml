@@ -28,7 +28,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     stdin_open: true
     tty: true
-    restart: no
 
   #terraform:
   #  build:
@@ -55,6 +54,24 @@ services:
     depends_on:
       - registry
     command: [ "/bin/sh", "-c", "docker tag angular-dev-env:latest localhost:5000/angular-dev-env:latest && docker push localhost:5000/angular-dev-env:latest" ]
+    tty: true
+    stdin_open: true
+
+  angular-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile_angular-dev-env
+    container_name: angular_deploy-env
+    ports:
+      - "3000:3000"
+      - "2222:22"
+    networks:
+      deploy-network:
+        ipv4_address: 172.32.0.3
+    command: ["/bin/bash", "-c", "/usr/sbin/sshd && /bin/bash"]
+    tty: true
+    stdin_open: true
+
 
   angular-app:
     build:
@@ -74,3 +91,9 @@ networks:
     ipam:
       config:
         - subnet: 172.31.0.0/16
+  deploy-network:
+    name: deploy-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.32.0.0/16
