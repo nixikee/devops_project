@@ -34,7 +34,7 @@ services:
     volumes:
       - ./terraform:/workspace
     working_dir: /workspace
-    command: /bin/sh
+    command: [ "/bin/sh" ]
     stdin_open: true
     tty: true
 
