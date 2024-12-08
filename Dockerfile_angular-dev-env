@@ -1,39 +1,28 @@
 FROM node:20
 
-# RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf && apt-get update
-#RUN apt-get update
-#RUN apt-get install -y ufw
-#RUN apt-get install -y iptables
-#RUN npm install -g @angular/cli
-#RUN ng version
-
-# Copy your firewall script
-#COPY firewall_settings/angular_firewall.sh /firewall.sh
-
-# Make sure the script is executable
-#RUN chmod +x /firewall.sh
-
-#WORKDIR /tmp
-
-#ENV NG_CLI_ANALYTICS=false
-
-#RUN ng build
-
-#EXPOSE 4200
-
-#ENTRYPOINT ["/bin/bash", "-c", "/firewall.sh && ng serve --host 0.0.0.0"]
-
 # Munkakönyvtár beállítása
 WORKDIR /usr/src/app
 
 # Másold a package.json és package-lock.json fájlokat
 COPY package*.json ./
 
-# Telepítsd a projekt függőségeit
-RUN npm install
+# RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf && apt-get update
+RUN apt-get update
+RUN apt-get install -y ufw
+RUN apt-get install -y iptables
+RUN npm install -g @angular/cli
+RUN ng version
 
 # Másold be az Angular projekt teljes tartalmát (src, angular.json, stb.)
 COPY . .
+
+# Copy your firewall script
+COPY firewall_settings/angular_firewall.sh /firewall.sh
+
+# Make sure the script is executable
+RUN chmod +x /firewall.sh
+
+ENV NG_CLI_ANALYTICS=false
 
 # Futtasd a build parancsot
 RUN ng build
