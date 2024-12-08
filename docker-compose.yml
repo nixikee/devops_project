@@ -32,11 +32,13 @@ services:
   terraform:
     image: hashicorp/terraform:latest
     volumes:
-      - ./terraform:/workspace
+      - .:/workspace
+      - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /workspace
-    command: [ "/bin/sh" ]
+    command: [ "terraform --version" ]
     stdin_open: true
     tty: true
+    restart: no
 
   registry:
     image: registry:2
