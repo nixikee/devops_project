@@ -1,0 +1,10 @@
+FROM hashicorp/terraform:latest
+
+RUN apk add --no-cache bash curl
+
+WORKDIR /app
+
+COPY ./terraform /app
+
+ENTRYPOINT ["terraform"]
+CMD ["--help"]

@@ -30,16 +30,16 @@ services:
     tty: true
     restart: no
 
-  terraform:
-    image: hashicorp/terraform:light
-    volumes:
-      - .:/workspace
-      - /var/run/docker.sock:/var/run/docker.sock
-    working_dir: /workspace
-    command: [ "terraform --version" ]
-    stdin_open: true
-    tty: true
-    restart: no
+  #terraform:
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile_terraform
+  #  volumes:
+  #    - ./terraform:/app
+  #  working_dir: /app
+  #  command: [ "terraform init" ]
+  #  stdin_open: true
+  #  tty: true
 
   registry:
     image: registry:2
