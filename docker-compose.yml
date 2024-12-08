@@ -39,7 +39,7 @@ services:
     image: localhost:5000/angular-dev-env:latest
     build:
       context: .
-      dockerfile: Dockerfile_angular_dev_env
+      dockerfile: Dockerfile_angular-dev-env
     depends_on:
       - registry
     command: [ "/bin/sh", "-c", "docker tag angular-dev-env:latest localhost:5000/angular-dev-env:latest && docker push localhost:5000/angular-dev-env:latest" ]
