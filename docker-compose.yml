@@ -57,7 +57,7 @@ services:
     tty: true
     stdin_open: true
 
-  angular-dev:
+  angular_deploy-env:
     build:
       context: .
       dockerfile: Dockerfile_angular-dev-env
