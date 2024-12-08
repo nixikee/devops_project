@@ -29,6 +29,15 @@ services:
     stdin_open: true
     tty: true
 
+  terraform:
+    image: hashicorp/terraform:latest
+    volumes:
+      - ./terraform:/workspace
+    working_dir: /workspace
+    command: /bin/sh
+    stdin_open: true
+    tty: true
+
   registry:
     image: registry:2
     ports:
