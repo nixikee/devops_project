@@ -11,7 +11,7 @@ services:
       - ./bind_config:/etc/bind
     networks:
       app_network:
-        ipv4_address: 172.30.0.2
+        ipv4_address: 172.31.0.2
     cap_add:
       - NET_ADMIN
 
@@ -52,7 +52,7 @@ services:
       - "4200:4200"
     networks:
       app_network:
-        ipv4_address: 172.30.0.3
+        ipv4_address: 172.31.0.3
     cap_add:
       - NET_ADMIN
 
@@ -61,4 +61,4 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.30.0.0/16
+        - subnet: 172.31.0.0/16

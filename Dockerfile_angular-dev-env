@@ -10,6 +10,7 @@ COPY package*.json ./
 RUN apt-get update
 RUN apt-get install -y ufw
 RUN apt-get install -y iptables
+RUN npm install
 RUN npm install -g @angular/cli
 RUN ng version
 
