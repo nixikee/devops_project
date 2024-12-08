@@ -2,7 +2,7 @@ global:
   scrape_interval: 15s
 
 scrape_configs:
-  - job_name: 'prometheus'
+  - job_name: 'angular-app'
     static_configs:
-      - targets: ['angular-app:80']
+      - targets: ['angular_app:80']
 

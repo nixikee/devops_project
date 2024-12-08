@@ -32,3 +32,12 @@ EXPOSE 4200
 
 # Beállítások: indítsd el az alkalmazást
 ENTRYPOINT ["/bin/bash", "-c", "/firewall.sh && ng serve --host 0.0.0.0"]
+
+
+FROM nginx:1.25
+
+COPY --from=build /app/dist/your-angular-app /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

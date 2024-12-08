@@ -63,7 +63,7 @@ services:
       dockerfile: Dockerfile_angular-dev-env
     container_name: angular-dev
     ports:
-      - "3000:3000"
+      - "4200:4200"
       - "2222:22"
     networks:
       deploy-network:
@@ -78,8 +78,8 @@ services:
       context: .
       dockerfile: Dockerfile_angular-dev-env
     ports:
-      - "4200:4200"
-      - "4200:80"
+      - "4201:4200"
+      - "4202:80"
     networks:
       app_network:
         ipv4_address: 172.31.0.3
@@ -95,6 +95,67 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+  graylog:
+    image: graylog/graylog:latest
+    container_name: graylog
+    environment:
+      GRAYLOG_HTTP_EXTERNAL_URI: "http://localhost:9000/"
+    depends_on:
+      - mongo
+      - elasticsearch
+    ports:
+      - "9000:9000"
+      - "12201:12201/udp"
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+
+  zabbix-server:
+    image: zabbix/zabbix-server-mysql:latest
+    container_name: zabbix-server
+    environment:
+      DB_SERVER_HOST: zabbix-mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: zabbix_password
+      MYSQL_DATABASE: zabbix
+    depends_on:
+      - zabbix-mysql
+    ports:
+      - "10051:10051"
+
+  zabbix-mysql:
+    image: mysql:latest
+    container_name: zabbix-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: zabbix_password
+      MYSQL_DATABASE: zabbix
+    ports:
+      - "3306:3306"
+
+volumes:
+  grafana-data:
 
 networks:
   app_network:
