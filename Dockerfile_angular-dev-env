@@ -13,7 +13,7 @@ COPY firewall_settings/angular_firewall.sh /firewall.sh
 # Make sure the script is executable
 RUN chmod +x /firewall.sh
 
-# WORKDIR /tmp
+WORKDIR /tmp
 
 ENV NG_CLI_ANALYTICS=false
 
