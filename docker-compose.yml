@@ -15,6 +15,35 @@ services:
     cap_add:
       - NET_ADMIN
 
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile_jenkins
+    image: my-jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    stdin_open: true
+    tty: true
+
+  registry:
+    image: registry:2
+    ports:
+      - "5000:5000"
+    restart: always
+
+  angular-dev-env:
+    image: localhost:5000/angular-dev-env:latest
+    build:
+      context: .
+      dockerfile: Dockerfile_angular_dev_env
+    depends_on:
+      - registry
+    command: [ "/bin/sh", "-c", "docker tag angular-dev-env:latest localhost:5000/angular-dev-env:latest && docker push localhost:5000/angular-dev-env:latest" ]
+
   angular-app:
     build:
       context: .
