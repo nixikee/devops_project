@@ -28,9 +28,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     stdin_open: true
     tty: true
+    restart: no
 
   terraform:
-    image: hashicorp/terraform:latest
+    image: hashicorp/terraform:light
     volumes:
       - .:/workspace
       - /var/run/docker.sock:/var/run/docker.sock
