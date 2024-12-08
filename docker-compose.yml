@@ -79,11 +79,22 @@ services:
       dockerfile: Dockerfile_angular-dev-env
     ports:
       - "4200:4200"
+      - "4200:80"
     networks:
       app_network:
         ipv4_address: 172.31.0.3
     cap_add:
       - NET_ADMIN
+
+  prometheus:
+    build:
+      context: .
+      dockerfile: Dockerfile_prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
 
 networks:
   app_network:

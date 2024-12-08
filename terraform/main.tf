@@ -8,7 +8,7 @@ terraform {
   }
 }
 
-resource "docker_image" "angular_app" {
+resource "docker_image" "devops_project" {
   name = "angular-devops:latest"
   build {
     context    = "."
@@ -18,10 +18,10 @@ resource "docker_image" "angular_app" {
   }
 }
 
-resource "docker_container" "angular_app" {
+resource "docker_container" "devops_project" {
   name  = "${var.container_name}"
   hostname = "${var.container_name}"
-  image = docker_image.angular_app.image_id
+  image = docker_image.devops_project.image_id
 
   # Port mapping
   ports {

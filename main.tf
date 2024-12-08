@@ -21,8 +21,8 @@ resource "docker_network" "app_network" {
 
 
 # Angular alkalmazás modul
-module "angular_app" {
-  source = "./modules/angular-app"
+module "devops_project" {
+  source = "./"
 
   app_port = var.client_port
   container_name = "${var.project_name}-angular"
