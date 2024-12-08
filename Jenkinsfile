@@ -7,6 +7,7 @@ pipeline {
 
     environment {
         GITHUB_REPO = 'https://github.com/nixikee/devops_project.git'
+        DEPLOY_CONTAINER = 'node20-deploy-container'
     }
 
     stages {
@@ -55,14 +56,25 @@ pipeline {
         stage('Deploy') {
             when {
                 anyOf {
-                    branch 'main'
-                    branch 'master'
+                    branch env.BRANCH
                 }
             }
             steps {
                 echo 'Deploying the application...'
-                // Itt jönnének a tényleges deployment lépések
-                // Például: sh 'ssh user@server "cd /path/to/app && git pull && npm ci && npm run build && pm2 restart app"'
+                sshagent(credentials: ['jenkins-deploy-key']) { // sshagent plugin szükséges
+                    sh """
+                        ssh -o StrictHostKeyChecking=no deploy@${env.DEPLOY_CONTAINER} -p 22 '
+                            cd /app
+                            rm -rf *
+                            git clone https://github.com/jankiz/nodejs-sample-app-for-devops.git
+                            cd /app/nodejs-sample-app-for-devops
+                            git checkout origin/feature/http-server
+                            npm ci
+                            npm run build
+                            pm2 start dist/index.js --name "calculator-app"
+                        '
+                    """
+                }
             }
         }
 
