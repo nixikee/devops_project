@@ -1,1 +1,24 @@
-<p>add works!</p>
+<div class="full" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+  <form (ngSubmit)="onSubmit()" #myForm="ngForm">
+    <h3>Add your data:</h3>
+    <div class="form-group">
+      <label class="label" for="name">Name</label>
+      <input [(ngModel)]="formData.name" type="text" name="name" id="name" />
+    </div>
+    <div class="form-group">
+      <label class="label" for="birthdate">Startdate</label>
+      <input [(ngModel)]="formData.birthdate" type="date" name="birthdate" id="birthdate" />
+    </div>
+    <div class="form-group">
+      <label class="label" for="nickname">Nickname</label>
+      <input [(ngModel)]="formData.nickname" type="text" name="nickname" id="nickname" />
+    </div>
+    <div class="form-group">
+      <label class="label" for="location">Location</label>
+      <input [(ngModel)]="formData.location" type="text" name="location" id="location" />
+    </div>
+    <div class="form-group button">
+      <button type="submit">Add</button>
+    </div>
+  </form>
+</div>

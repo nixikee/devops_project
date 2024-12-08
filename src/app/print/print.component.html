@@ -1,1 +1,10 @@
-<p>print works!</p>
+<div class="full" *ngIf="data">
+  <div class="full2">
+    <div>
+      <h3>Received Data:</h3>
+    </div>
+    <div>
+      <p>Hello {{ data.nickname }}! Your name is {{ data.name }} and you were born on {{ data.birthdate }}. You live in {{ data.location }}. </p>
+    </div>
+  </div>
+</div>
